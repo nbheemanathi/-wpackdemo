@@ -1,15 +1,32 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
-    entry : {
-        app:'./src/index.js',
-        print: './src/print.js'
+    entry: {
+        // app:'./src/index.js',
+        // print: './src/print.js'
+        app: './src/index.js'
     },
+    mode: 'production',
+    devtool: 'inline-source-map',//shows exact file for errors
+    devServer: {
+        contentBase: './dist',
+        hot: true
+    },
+    plugins: [
+        new CleanWebpackPlugin(['dist']),
+        new HtmlWebpackPlugin({
+            title: 'Output Management'
+        }),
+        new webpack.HotModuleReplacementPlugin()
+    ],
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname,'dist')
+        path: path.resolve(__dirname, 'dist')
     },
-    module:{
+    module: {
         rules: [
             {
                 test: /\.css$/,
@@ -32,7 +49,7 @@ module.exports = {
                             //can be optimized on particular  optimizer 
                         }
                     }
-                    
+
                 ]
             },
             {
@@ -46,7 +63,7 @@ module.exports = {
                 use: [
                     'cvs-loader'
                 ]
-            },{
+            }, {
                 test: /\.xml$/,
                 use: [
                     'xml-loader'
